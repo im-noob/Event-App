@@ -93,8 +93,6 @@ class EventController extends Controller
         $start_date = Carbon::parse($event->start_date);
         $end_date = Carbon::parse($event->end_date);
 
-//        dd(Carbon::parse('first fri of 1 month'));
-
         $type = $event->type;
         $period_list = [];
         if ($type == 'type_1') {
@@ -157,15 +155,9 @@ class EventController extends Controller
             elseif($event->occ_type_3 == 6)
                 $occur_interval = '6 months';
             else                                    // if($event->occ_type_3 == 1)
-                $occur_interval = 'year';
+                $occur_interval = '1 year';
 
             foreach (CarbonPeriod::create($start_date, "$occur_interval", $end_date) as $base_date) {
-
-//                dump($new_day);
-////                foreach (CarbonPeriod::create($base_date, "1 $occur_day", $end_date) as $base_date_inner) {
-////                    dump($base_date_inner);
-////                }
-//                $date = $base_date->is($occur_day) ? $base_date : $base_date->next();
                 $period_list[] = $base_date->modify("$occur_period $occur_day");;
             }
         }

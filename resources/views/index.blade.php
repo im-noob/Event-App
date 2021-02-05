@@ -90,7 +90,7 @@
                             4 Months
                         @elseif($event->occ_type_3 == 6)
                             6 Months
-                        @elseif($event->occ_type_3 == 1)
+                        @elseif($event->occ_type_3 == 12)
                             Year
                         @endif
 
