@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Event;
+use Carbon\CarbonPeriod;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Redirect;
 
 class EventController extends Controller
@@ -87,8 +89,92 @@ class EventController extends Controller
      */
     public function show($id)
     {
+        $event = Event::find($id);
+        $start_date = Carbon::parse($event->start_date);
+        $end_date = Carbon::parse($event->end_date);
+
+//        dd(Carbon::parse('first fri of 1 month'));
+
+        $type = $event->type;
+        $period_list = [];
+        if ($type == 'type_1') {
+            if($event->occ_type_2 == 1)
+                $occur_period = 1;
+            elseif($event->occ_type_2 == 2)
+                $occur_period = 2;
+            elseif($event->occ_type_2 == 3)
+                $occur_period = 3;
+            else                                    // if($event->occ_type_2 == 4)
+                $occur_period = 4;
+
+
+            if($event->occ_type_3 == 1)
+                $occur_interval = 'day';
+            elseif($event->occ_type_3 == 2)
+                $occur_interval = 'week';
+            elseif($event->occ_type_3 == 3)
+                $occur_interval = 'month';
+            else                                    //if($event->occ_type_3 == 4)
+                $occur_interval = 'year';
+
+            foreach (CarbonPeriod::create($start_date, "$occur_period $occur_interval", $end_date) as $period) {
+                $period_list[] = $period;
+            }
+        }else{
+
+
+            if($event->occ_type_1 == 1)
+                $occur_period = 'first';
+            elseif($event->occ_type_1 == 2)
+                $occur_period = 'second';
+            elseif($event->occ_type_1 == 3)
+                $occur_period = 'third';
+            else                                    //if($event->occ_type_1 == 4)
+                $occur_period = 'fourth';
+
+
+
+            if($event->occ_type_2 == 1)
+                $occur_day = 'mon';
+            elseif($event->occ_type_2 == 2)
+                $occur_day = 'tue';
+            elseif($event->occ_type_2 == 3)
+                $occur_day = 'wed';
+            elseif($event->occ_type_2 == 4)
+                $occur_day = 'thu';
+            elseif($event->occ_type_2 == 5)
+                $occur_day = 'fri';
+            else                                    // if($event->occ_type_2 == 6)
+                $occur_day = 'sat';
+
+
+            if($event->occ_type_3 == 1)
+                $occur_interval = '1 month';
+            elseif($event->occ_type_3 == 3)
+                $occur_interval = '3 months';
+            elseif($event->occ_type_3 == 4)
+                $occur_interval = '4 months';
+            elseif($event->occ_type_3 == 6)
+                $occur_interval = '6 months';
+            else                                    // if($event->occ_type_3 == 1)
+                $occur_interval = 'year';
+
+            foreach (CarbonPeriod::create($start_date, "$occur_interval", $end_date) as $base_date) {
+
+//                dump($new_day);
+////                foreach (CarbonPeriod::create($base_date, "1 $occur_day", $end_date) as $base_date_inner) {
+////                    dump($base_date_inner);
+////                }
+//                $date = $base_date->is($occur_day) ? $base_date : $base_date->next();
+                $period_list[] = $base_date->modify("$occur_period $occur_day");;
+            }
+        }
+
+
+
         return view('view',[
-            'event' => Event::find($id),
+            'event' => $event,
+            'period_list' => $period_list
         ]);
     }
 
