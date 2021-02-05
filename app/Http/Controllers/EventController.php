@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Event;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 
 class EventController extends Controller
 {
@@ -51,6 +52,15 @@ class EventController extends Controller
             'type_2_occ_type_2' => 'required_if:type,type_2',
             'type_2_occ_type_3' => 'required_if:type,type_2',
         ]);
+
+        $event = new Event();
+        $this->save($request, $event);
+
+        return Redirect::route('event.index')->with('success','Added');
+    }
+
+    private function save($request, $event)
+    {
         if ($request->type === 'type_1') {
             $occ_type_1 = $request->type_1_occ_type_1;
             $occ_type_2 = $request->type_1_occ_type_2;
@@ -60,7 +70,6 @@ class EventController extends Controller
             $occ_type_2 = $request->type_2_occ_type_2;
             $occ_type_3 = $request->type_2_occ_type_3;
         }
-        $event = new Event();
         $event->name = $request->name;
         $event->start_date = $request->start_date;
         $event->end_date = $request->end_date;
@@ -69,10 +78,7 @@ class EventController extends Controller
         $event->occ_type_2 = $occ_type_2;
         $event->occ_type_3 = $occ_type_3;
         $event->save();
-
-        return view('index')->with('success', 'Added');
     }
-
     /**
      * Display the specified resource.
      *
@@ -82,7 +88,7 @@ class EventController extends Controller
     public function show($id)
     {
         return view('view',[
-
+            'event' => Event::find($id),
         ]);
     }
 
@@ -94,7 +100,9 @@ class EventController extends Controller
      */
     public function edit($id)
     {
-        return view('edit');
+        return view('edit',[
+            'event' => Event::find($id),
+        ]);
     }
 
     /**
@@ -106,7 +114,25 @@ class EventController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'name' => 'required|max:200',
+            'start_date' => 'date',
+            'end_date' => 'date',
+            'type' => 'required:in:type_1,type_2',
+
+            'type_1_occ_type_1' => 'required_if:type,type_1',
+            'type_1_occ_type_2' => 'required_if:type,type_1',
+            'type_1_occ_type_3' => 'required_if:type,type_1',
+
+            'type_2_occ_type_1' => 'required_if:type,type_2',
+            'type_2_occ_type_2' => 'required_if:type,type_2',
+            'type_2_occ_type_3' => 'required_if:type,type_2',
+        ]);
+
+        $event = Event::find($id);
+        $this->save($request, $event);
+
+        return Redirect::route('event.index')->with('success','Update');
     }
 
     /**
