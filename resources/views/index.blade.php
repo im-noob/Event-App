@@ -2,30 +2,30 @@
 @section('content')
 
     <h1>Event List Page</h1>
-    <table>
+    <table class="table table-hover">
 
         <tr>
-            <td width="20">
+            <th scope="col">
                 <strong>#</strong>
-            </td>
-            <td width="150">
+            </th>
+            <th scope="col">
                 <strong>Title</strong>
-            </td>
-            <td width="250">
+            </th>
+            <th scope="col">
                 <strong>Dates</strong>
-            </td>
-            <td width="250">
+            </th>
+            <th scope="col">
                 <strong>Occurrence</strong>
-            </td>
-            <td width="200">
+            </th>
+            <th scope="col">
                 <strong>Actions</strong>
-            </td>
+            </th>
         </tr>
         @forelse($events as $event)
             <tr>
-                <td>
+                <th scope="row">
                     {{$event->id}}
-                </td>
+                </th>
                 <td>
                     {{$event->name}}
                 </td>
@@ -97,16 +97,12 @@
                     @endif
                 </td>
                 <td>
-                    <button>
-                        <a href="{{route('event.show',$event->id)}}">View</a>
-                    </button>
-                    <button>
-                        <a href="{{route('event.edit',$event->id)}}">Edit</a>
-                    </button>
+                    <a class="btn btn-primary" href="{{route('event.show',$event->id)}}">View</a>
+                    <a class="btn btn-success" href="{{route('event.edit',$event->id)}}">Edit</a>
                     <form method="POST" action="{{route('event.destroy',$event->id)}}">
                         @csrf
                         @method('DELETE')
-                        <input type="submit" value="Delete">
+                        <input type="submit" value="Delete" class="btn btn-danger">
                     </form>
                 </td>
             </tr>

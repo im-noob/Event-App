@@ -6,24 +6,24 @@
         @method('PUT')
         <label>
             Event Title
-            <input name="name" type="text" value="{{$event->name}}">
+            <input class="form-control" name="name" type="text" value="{{$event->name}}">
         </label>
         <br>
         <label>
             Start Date
-            <input name="start_date" type="date" value="{{$event->start_date}}">
+            <input class="form-control" name="start_date" type="date" value="{{$event->start_date}}">
         </label>
         <br>
         <label>
             End Date
-            <input name="end_date" type="date" value="{{$event->end_date}}">
+            <input class="form-control" name="end_date" type="date" value="{{$event->end_date}}">
         </label>
         <br>
         Recurrence:
         <label>
             Repeat:
             <input name="type" type="radio" value="type_1" {{$event->type == 'type_1' ? 'checked' : ''}} >
-            <input type="hidden" name="type_1_occ_type_1" value="0">
+            <input class="form-control" type="hidden" name="type_1_occ_type_1" value="0">
             <select id="lstRepeatType" class="textbox-medium"
                     name="type_1_occ_type_2" style="font-size: x-small; width: 100px; font-family: Verdana"
                     tabindex="10">
@@ -75,7 +75,7 @@
             </select>
         </label>
         <br>
-        <input type="submit" value="Save">
+        <input class="btn btn-primary" type="submit" value="Save" >
     </form>
 
 @endsection

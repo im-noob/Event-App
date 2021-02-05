@@ -2,25 +2,24 @@
 @section('content')
     <h1>Event View Page</h1>
     <h2>{{$event->name}}</h2>
-    <table>
+    <table class="table table-hover">
         <tr>
-            <td width="20">
+            <th scope="col">
                 <strong>#</strong>
-            </td>
-            <td width="150">
+            </th>
+            <th scope="col">
                 <strong>Day Name</strong>
-            </td>
-            <td width="250">
+            </th>
+            <th scope="col">
                 <strong>Dates</strong>
-            </td>
-            </td>
+            </th>
         </tr>
 
             @forelse($period_list as $key=>$one_period)
             <tr>
-                <td>
+                <th scope="row">
                     {{$key+1}}
-                </td>
+                </th>
                 <td>
                     {{$one_period->format('d m Y')}}
                 </td>
