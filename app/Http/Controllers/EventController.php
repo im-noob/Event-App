@@ -142,8 +142,10 @@ class EventController extends Controller
                 $occur_day = 'thu';
             elseif($event->occ_type_2 == 5)
                 $occur_day = 'fri';
-            else                                    // if($event->occ_type_2 == 6)
+            elseif($event->occ_type_2 == 6)
                 $occur_day = 'sat';
+            else                                    // if($event->occ_type_2 == 6)
+                $occur_day = 'sun';
 
 
             if($event->occ_type_3 == 1)
